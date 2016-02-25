@@ -40,6 +40,14 @@ public class Demo1Test {
 
         Demo1 demo1 = new Demo1("text");
 
+        DemoGlobalConfig cfg = DemoGlobalConfig.get();
+        cfg.setGlobalVar("this is a global string");
+
+        List<MyString> myStrings = new ArrayList<>();
+        myStrings.add(new MyString("string 1"));
+        myStrings.add(new MyString("string 2"));
+        cfg.setMyStrings(myStrings);
+
         // Run build
         FreeStyleProject project = j.createFreeStyleProject();
         project.getBuildersList().add(demo1);
@@ -47,6 +55,10 @@ public class Demo1Test {
 
         // Check expectations
         j.assertBuildStatusSuccess(build);
+        j.assertLogContains("Input 1: text", build);
+        j.assertLogContains("Global Var: this is a global string", build);
+        j.assertLogContains("String value: string 1", build);
+        j.assertLogContains("String value: string 2", build);
 
     }
 

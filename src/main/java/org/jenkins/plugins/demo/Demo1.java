@@ -15,11 +15,8 @@ import java.lang.InterruptedException;
 
 import jenkins.model.GlobalConfiguration;
 
-import net.sf.json.JSONObject;
-
 import org.kohsuke.stapler.DataBoundConstructor;
 import org.kohsuke.stapler.DataBoundSetter;
-import org.kohsuke.stapler.StaplerRequest;
 
 public class Demo1 extends Builder {
 
@@ -45,9 +42,10 @@ public class Demo1 extends Builder {
     ) throws IOException, InterruptedException
     {
         final PrintStream logger = listener.getLogger();
+        DemoGlobalConfig demoGlobalConfig = GlobalConfiguration.all().get(DemoGlobalConfig.class);
         logger.println("Input 1: "+input1);
-        logger.println("Global Var: "+getDescriptor().globalVar);
-        List<MyString> strings = getDescriptor().myStrings;
+        logger.println("Global Var: "+demoGlobalConfig.getGlobalVar());
+        List<MyString> strings = demoGlobalConfig.getMyStrings();
         logger.println("Strings: "+strings);
         if (strings != null) {
           for (MyString s : strings) {
@@ -57,18 +55,9 @@ public class Demo1 extends Builder {
         return true;
     }
 
-    @Override
-    public DescriptorImpl getDescriptor() {
-        return (DescriptorImpl) super.getDescriptor();
-    }
-
     @Extension
     public static final class DescriptorImpl extends BuildStepDescriptor<Builder> {
-        // Global variables only
-        private String globalVar;
-        private List<MyString> myStrings;
 
-        // We have 3 methods that are NOT for global variables
         public DescriptorImpl() {
             System.out.println("DescriptorImpl::load()");
             load();
@@ -83,43 +72,5 @@ public class Demo1 extends Builder {
         public String getDisplayName() {
             return "Demo1";
         } 
-
-        // Global variables handled here
-        @Override
-        public boolean configure(StaplerRequest req, JSONObject json)
-        throws FormException
-        {
-            System.out.println("DescriptorImpl.configure()");
-            req.bindJSON(this, json);
-            save();
-            return true;
-        }
- 
-        public String getGlobalVar() {
-            System.out.println("DescriptorImpl.getGlobalVar()");
-            return globalVar;
-        }
- 
-        @DataBoundSetter
-        public void setGlobalVar(String globalVar) {
-            System.out.println("DescriptorImpl.setGlobalVar()");
-            this.globalVar = globalVar;
-        }
- 
-        public List<MyString> getMyStrings() {
-            System.out.println("DescriptorImpl.getMyStrings() -> "+myStrings);
-            if (myStrings != null) {
-                for (MyString s : myStrings)  {
-                    System.out.println("value: "+s.getValue());
-                }
-            }
-            return myStrings;
-        }
- 
-        @DataBoundSetter
-        public void setMyStrings(List<MyString> myStrings) {
-            System.out.println("Descriptor.setMyStrings("+myStrings+")");
-            this.myStrings = myStrings;
-        }
     }
 }
