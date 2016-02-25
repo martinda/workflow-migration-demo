@@ -14,6 +14,7 @@ import static org.junit.Assert.assertNull;
 import static org.junit.Assert.assertThat;
 
 import org.jvnet.hudson.test.JenkinsRule;
+import org.jvnet.hudson.test.recipes.LocalData;
 
 public class Demo1Test {
 
@@ -70,5 +71,13 @@ public class Demo1Test {
     private void roundtrip(Demo1 before) throws Exception {
         Demo1 after = j.configRoundtrip(before);
         j.assertEqualBeans(before, after, "input1");
+    }
+
+    @LocalData
+    @Test
+    public void backwardsCompat() {
+        DemoGlobalConfig cfg = DemoGlobalConfig.get();
+        assertEquals("a global value",cfg.getGlobalVar());
+        assertEquals(2,cfg.getMyStrings().size());
     }
 }

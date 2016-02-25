@@ -1,0 +1,12 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<org.jenkins.plugins.demo.Demo1_-DescriptorImpl plugin="workflow-migration-demo@1.0-SNAPSHOT">
+  <globalVar>a global value</globalVar>
+  <myStrings>
+    <org.jenkins.plugins.demo.MyString>
+      <value>string value 1</value>
+    </org.jenkins.plugins.demo.MyString>
+    <org.jenkins.plugins.demo.MyString>
+      <value>string value 2</value>
+    </org.jenkins.plugins.demo.MyString>
+  </myStrings>
+</org.jenkins.plugins.demo.Demo1_-DescriptorImpl>
