@@ -1,0 +1,10 @@
+# vim
+*.swp
+Session.vim
+
+# Maven
+target/
+
+# Jenkins mvn hpi:run puts things under work/
+work/
+
