@@ -1,4 +1,5 @@
 <?xml version='1.0' encoding='UTF-8'?>
+<!-- This is the local data we're loading -->
 <org.jenkins.plugins.demo.Demo1_-DescriptorImpl plugin="workflow-migration-demo@1.0-SNAPSHOT">
   <globalVar>a global value</globalVar>
   <myStrings>

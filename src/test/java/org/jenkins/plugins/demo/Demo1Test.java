@@ -76,8 +76,10 @@ public class Demo1Test {
     @LocalData
     @Test
     public void backwardsCompat() {
+        System.out.println("Test starts");
         DemoGlobalConfig cfg = DemoGlobalConfig.get();
         assertEquals("a global value",cfg.getGlobalVar());
         assertEquals(2,cfg.getMyStrings().size());
+        System.out.println("Test ends");
     }
 }

@@ -8,6 +8,10 @@ import hudson.model.BuildListener;
 import hudson.tasks.BuildStepDescriptor;
 import hudson.tasks.Builder;
 
+import hudson.init.InitMilestone;
+import hudson.init.Initializer;
+import hudson.model.Items;
+
 import java.io.IOException;
 import java.io.PrintStream;
 import java.util.List;
@@ -61,6 +65,18 @@ public class Demo1 extends Builder {
         public DescriptorImpl() {
             System.out.println("DescriptorImpl::load()");
             load();
+            System.out.println("Loaded file: "+getConfigFile().getFile().getName());
+            try {
+                System.out.println("Loaded content:\n"+getConfigFile().asString());
+            } catch (IOException ioe) {
+                System.out.println("IO exception reading file");
+            }
+        }
+
+        @Initializer(before = InitMilestone.PLUGINS_STARTED)
+        public static void addAliases() {
+            System.out.println("Alias: "+DescriptorImpl.class.getName()+" becomes "+DemoGlobalConfig.class.getName());
+            Items.XSTREAM2.addCompatibilityAlias(DescriptorImpl.class.getName(), DemoGlobalConfig.class);
         }
 
         @Override

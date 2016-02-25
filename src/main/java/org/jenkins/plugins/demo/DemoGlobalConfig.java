@@ -7,6 +7,10 @@ import net.sf.json.JSONObject;
 import org.kohsuke.stapler.DataBoundSetter;
 import org.kohsuke.stapler.StaplerRequest;
 
+import hudson.init.InitMilestone;
+import hudson.init.Initializer;
+import hudson.model.Items;
+
 @Extension
 public class DemoGlobalConfig extends GlobalConfiguration {
 
@@ -23,13 +27,20 @@ public class DemoGlobalConfig extends GlobalConfiguration {
         System.out.println("DemoGlobalConfig()");
         load();
     }
+/*
 
+    // I tried it here too, does not work
+    @Initializer(before = InitMilestone.PLUGINS_STARTED)
+    public static void addAliases() {
+        System.out.println("Alias: "+Demo1.DescriptorImpl.class.getName()+" becomes "+DemoGlobalConfig.class.getName());
+        Items.XSTREAM2.addCompatibilityAlias(Demo1.DescriptorImpl.class.getName(), DemoGlobalConfig.class);
+    }
+*/
     @Override
-    public boolean configure(StaplerRequest req, JSONObject o)
+    public boolean configure(StaplerRequest req, JSONObject json)
     throws FormException
     {
-        o = o.getJSONObject("demoGlobalConfig");
-        req.bindJSON(this, o);
+        req.bindJSON(this, json);
         save();
         return true;
     }
